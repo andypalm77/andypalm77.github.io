@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Andy Palm</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Hanken+Grotesk:wght@400;500;700&family=Azeret+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: neo-brutalist poster. Hard 2px ink borders, flat offset shadows, one safety-orange highlight. A black bar on top, three pages (home, portfolio, contact) switched from the nav. The one loud move is the orange block behind PALM; CORE is the one inverted ink block. Single committed look, light only. */
+:root {
+  --paper: #e4e7ea;
+  --white: #ffffff;
+  --ink: #101214;
+  --ink-muted: #aab3bb;
+  --muted: #4a525a;
+  --orange: #ff5a1f;
+  --display: 'Unbounded', 'Arial Black', Impact, sans-serif;
+  --body: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Azeret Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 16px/1.6 var(--body);
+  margin: 0;
+}
+h1, h2, h3, p, dl, dd, ol, ul { margin: 0; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* top bar */
+.top {
+  background: var(--ink);
+  color: var(--paper);
+  padding-block: 12px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.top-in {
+  max-width: 64rem;
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+.brand { display: inline-flex; align-items: center; text-decoration: none; font: 800 0.95rem/1 var(--display); }
+.brand-mark { background: var(--orange); color: var(--ink); padding: 8px 9px; }
+.nav { display: flex; flex-wrap: wrap; gap: 8px; }
+.nav a {
+  font: 600 0.72rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: var(--paper);
+  border: 2px solid var(--paper);
+  padding: 8px 12px;
+}
+.nav a:hover, .nav a[aria-current="page"] { background: var(--orange); border-color: var(--orange); color: var(--ink); }
+.top a:focus-visible { outline-color: var(--paper); }
+
+/* page */
+.page {
+  padding-block: 48px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.col { max-width: 64rem; margin-inline: auto; }
+.view { display: flex; flex-direction: column; gap: 56px; }
+section, header { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+
+.kicker {
+  align-self: flex-start;
+  background: var(--ink);
+  color: var(--paper);
+  font: 600 0.75rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 7px 10px;
+}
+
+h1 { font: 800 clamp(2.6rem, 12vw, 7.5rem)/0.92 var(--display); text-transform: uppercase; letter-spacing: -0.03em; }
+h1 span { display: block; }
+h1.small { font-size: clamp(2.1rem, 9vw, 4.5rem); }
+.mark { display: inline-block; background: var(--orange); padding: 0 0.1em; }
+
+.tagline { font: 600 0.8rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
+.lede { font-size: 1.2rem; line-height: 1.5; max-width: 36rem; }
+/* spec sheet */
+.sheet {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, max-content) minmax(0, 1fr);
+  background: var(--white);
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.sheet dt, .sheet dd { padding: 12px 16px; border-top: 2px solid var(--ink); }
+.sheet dt:first-of-type, .sheet dt:first-of-type + dd { border-top: 0; }
+.sheet dt {
+  font: 600 0.72rem/1.9 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border-right: 2px solid var(--ink);
+  background: var(--paper);
+}
+
+/* home tiles */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  min-height: 14rem;
+  padding: 18px;
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  text-decoration: none;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.tile:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+.tile-name { font: 800 1.3rem/1.1 var(--display); text-transform: uppercase; }
+.tile-desc { font-size: 0.9rem; line-height: 1.4; }
+.tile.t-resume { background: var(--orange); }
+.tile.t-portfolio { background: var(--white); }
+.tile.t-contact { background: var(--ink); color: var(--paper); box-shadow: 6px 6px 0 var(--orange); }
+.tile.t-contact:hover { box-shadow: 9px 9px 0 var(--orange); }
+.tile.t-contact:focus-visible { outline-color: var(--ink); }
+
+/* CORE block */
+article.core {
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--orange);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+.chip {
+  align-self: flex-start;
+  background: var(--orange);
+  color: var(--ink);
+  font: 600 0.7rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 9px;
+}
+.core h3 { font: 800 clamp(2.4rem, 8vw, 4.5rem)/1 var(--display); letter-spacing: -0.02em; }
+.core .meta { font: 400 0.78rem/1.5 var(--mono); color: var(--ink-muted); }
+.core p { max-width: 62ch; }
+
+.plate { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid var(--paper); }
+.plate > div { display: flex; flex-direction: column-reverse; gap: 4px; padding: 14px 16px; min-width: 0; }
+.plate > div + div { border-left: 2px solid var(--paper); }
+.plate dd { font: 800 clamp(1.2rem, 3.6vw, 2.4rem)/1 var(--display); color: var(--orange); }
+.plate dt { font: 600 0.68rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+
+.label { font: 600 0.72rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); }
+.phases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; padding: 0; border: 2px solid var(--paper); }
+.phases li { padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.phases li + li { border-left: 2px solid var(--paper); }
+.phases li.now { background: var(--orange); color: var(--ink); }
+.phase-name { font: 600 0.72rem/1.3 var(--mono); text-transform: uppercase; letter-spacing: 0.04em; }
+.phase-when { font-size: 0.82rem; line-height: 1.4; }
+.flag { font: 600 0.64rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* project cards */
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.card {
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--orange);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.card h3 { font: 800 0.85rem/1.4 var(--display); text-transform: uppercase; overflow-wrap: anywhere; }
+.card .meta { font: 400 0.72rem/1.4 var(--mono); color: var(--ink-muted); }
+.card p { font-size: 0.92rem; line-height: 1.55; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin-top: auto; }
+.tags li { font: 600 0.66rem/1 var(--mono); border: 1.5px solid var(--ink); padding: 5px 7px; background: var(--paper); }
+
+/* toolchain */
+.stack { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.group { background: var(--ink); color: var(--paper); border: 2px solid var(--ink); box-shadow: 6px 6px 0 var(--orange); padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.group.wide { grid-column: 1 / -1; }
+.group h3 { font: 600 0.72rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); }
+.group .tags { margin-top: 0; }
+.group .tags li { font-size: 0.78rem; padding: 7px 10px; }
+.card .tags li, .group .tags li { border-color: var(--paper); background: transparent; color: var(--paper); }
+
+/* work inside CORE */
+.subwork { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.sub { border: 2px solid var(--paper); padding: 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sub h4 { margin: 0; font: 800 0.85rem/1.4 var(--display); text-transform: uppercase; overflow-wrap: anywhere; }
+.sub p { font-size: 0.92rem; line-height: 1.55; }
+.sub .tags li { border-color: var(--paper); background: transparent; color: var(--paper); }
+.sublabel { font: 600 0.72rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-top: 8px; }
+
+/* incoming banner */
+.next { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; background: var(--orange); border: 2px solid var(--ink); padding: 12px 16px; font-weight: 700; }
+.next-tag { background: var(--ink); color: var(--paper); font: 600 0.68rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 8px; }
+
+/* internship block */
+article.intern {
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--orange);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+.intern h3 { font: 800 clamp(2.4rem, 8vw, 4.5rem)/1 var(--display); letter-spacing: -0.02em; text-transform: uppercase; }
+.intern .meta { font: 400 0.78rem/1.5 var(--mono); color: var(--ink-muted); }
+.intern p { max-width: 62ch; }
+.subwork.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* experience */
+.log { list-style: none; padding: 0; display: flex; flex-direction: column; border-bottom: 2px solid var(--ink); }
+.log li { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: 8px 32px; padding-block: 20px; border-top: 2px solid var(--ink); }
+.log .who { display: flex; flex-direction: column; gap: 4px; }
+.log .org { font: 800 1.1rem/1.2 var(--display); text-transform: uppercase; }
+.log .role { font: 600 0.72rem/1.6 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.log .what { max-width: 60ch; }
+.badge {
+  align-self: flex-start;
+  background: var(--orange);
+  color: var(--ink);
+  font: 600 0.64rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 7px;
+}
+
+/* contact */
+.reach { display: flex; flex-direction: column; background: var(--ink); color: var(--paper); border: 2px solid var(--ink); box-shadow: 8px 8px 0 var(--orange); }
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 16px 18px;
+  border-top: 2px solid var(--paper);
+  text-decoration: none;
+}
+.row:first-child { border-top: 0; }
+.row-label { font: 600 0.72rem/1.4 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); min-width: 5.5rem; }
+.row-val { font: 700 1.05rem/1.4 var(--body); overflow-wrap: anywhere; flex: 1 1 12rem; }
+a.row:hover { background: var(--orange); color: var(--ink); }
+a.row:hover .row-label { color: var(--ink); }
+.copy {
+  font: 600 0.68rem/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  background: transparent;
+  color: var(--paper);
+  border: 2px solid var(--paper);
+  cursor: pointer;
+}
+.copy:hover { background: var(--orange); border-color: var(--orange); color: var(--ink); }
+.reach a:focus-visible, .reach button:focus-visible { outline-color: var(--paper); }
+
+@media (prefers-reduced-motion: reduce) { .tile { transition: none; } .tile:hover { transform: none; } }
+
+@media (max-width: 720px) {
+  .tiles { grid-template-columns: minmax(0, 1fr); }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  .subwork, .subwork.three { grid-template-columns: minmax(0, 1fr); }
+  .stack { grid-template-columns: minmax(0, 1fr); }
+  .log li { grid-template-columns: minmax(0, 1fr); }
+  .tile { min-height: 8rem; }
+}
+@media (max-width: 560px) {
+  article.core, article.intern { padding: 18px; }
+  .plate { grid-template-columns: minmax(0, 1fr); }
+  .plate > div { flex-direction: row-reverse; justify-content: space-between; align-items: baseline; }
+  .plate > div + div { border-left: 0; border-top: 2px solid var(--paper); }
+  .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .phases li:nth-child(3) { border-left: 0; }
+  .phases li:nth-child(n+3) { border-top: 2px solid var(--paper); }
+}
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-in">
+    <a class="brand" href="#home" aria-label="Home"><span class="brand-mark">AP</span></a>
+    <nav class="nav" aria-label="Pages">
+      <a href="andy-palm-resume.pdf" target="_blank" rel="noopener">Resume ↗</a>
+      <a href="#portfolio" data-view="portfolio">Portfolio</a>
+      <a href="#contact" data-view="contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<main class="page">
+  <div class="col">
+
+    <!-- home -->
+    <div class="view" id="view-home">
+      <header>
+        <h1><span>Andy</span><span><span class="mark">Palm</span></span></h1>
+        <p class="lede">Aerospace Engineering at RPI with a minor in Economics</p>
+      </header>
+
+      <nav class="tiles" aria-label="Main pages">
+        <a class="tile t-resume" href="andy-palm-resume.pdf" target="_blank" rel="noopener">
+          <span class="tile-name">Resume ↗</span>
+          <span class="tile-desc">One-page PDF</span>
+        </a>
+        <a class="tile t-portfolio" href="#portfolio">
+          <span class="tile-name">Portfolio</span>
+          <span class="tile-desc">CORE, projects, experience, toolchain</span>
+        </a>
+        <a class="tile t-contact" href="#contact">
+          <span class="tile-name">Contact</span>
+          <span class="tile-desc">LinkedIn, email, phone</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- portfolio -->
+    <div class="view" id="view-portfolio">
+      <header>
+        <h1 class="small"><span>Portfolio</span></h1>
+        <p class="next"><span class="next-tag">Incoming</span><span>Airbus, summer 2027. A320 final assembly line, Mobile, Alabama.</span></p>
+      </header>
+
+      <section aria-labelledby="work-h">
+        <h2 class="kicker" id="work-h">Work</h2>
+
+        <article class="core">
+          <span class="chip">Chief Engineer since 2025</span>
+          <h3>CORE</h3>
+          <p class="meta">Compact Operational Research Engine</p>
+          <p>I lead a cross-functional team of 20+ students across four subsystems (Turbomachinery, Combustion &amp; Systems, Safety, and Structures), building one of the nation's first fully student-constructed jet engines from the ground up, targeting 60,000 RPM. I also work directly on turbomachinery design, CFD simulation, and structural analysis, including FEA validation of critical components. I manage the team budget, coordinate with RPI Environmental Health and Safety, and set the design schedule.</p>
+          <dl class="plate">
+            <div><dt>RPM target</dt><dd>60,000</dd></div>
+            <div><dt>Members</dt><dd>20+</dd></div>
+            <div><dt>Subsystems</dt><dd>4</dd></div>
+          </dl>
+          <p class="label">Build plan</p>
+          <ol class="phases">
+            <li class="now"><span class="phase-name">Design</span><span class="phase-when">Fall 2026</span><span class="flag">in progress</span></li>
+            <li><span class="phase-name">Manufacturing</span><span class="phase-when">Winter 2026–27</span></li>
+            <li><span class="phase-name">Assembly</span><span class="phase-when">Spring 2027</span></li>
+            <li><span class="phase-name">Testing</span><span class="phase-when">Early summer 2027</span></li>
+          </ol>
+          <p class="label">Work within CORE</p>
+          <div class="subwork">
+            <div class="sub">
+              <h4>inlet-optimizer</h4>
+              <p>A Python pipeline that drives Siemens NX journal files to generate and modify the bellmouth inlet geometry in CAD. It removes manual CAD rework between design iterations, so the team can explore the inlet design space quickly for the 60,000 RPM rotor.</p>
+              <ul class="tags"><li>Python</li><li>Siemens NX</li></ul>
+            </div>
+            <div class="sub">
+              <h4>task-tracker</h4>
+              <p>A real-time, multi-user web app that tracks task ownership and interface conditions across CORE's subsystems. It replaced spreadsheet-based coordination for a 20+ person team.</p>
+              <ul class="tags"><li>HTML</li><li>Systems engineering</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="intern">
+          <span class="chip">Engineering Intern · Summer 2026</span>
+          <h3>NiSource</h3>
+          <p class="meta">Distribution Asset and Risk Management</p>
+          <p>Engineering intern working on pipeline risk for the Distribution Integrity Management Program. My work covered risk modeling, a contractor field program, and an AI tool for tracking safety incidents.</p>
+          <dl class="plate">
+            <div><dt>Culverts modeled</dt><dd>160+</dd></div>
+            <div><dt>States</dt><dd>5</dd></div>
+            <div><dt>Contractor engagement</dt><dd>$36K</dd></div>
+          </dl>
+          <p class="label">Projects at NiSource</p>
+          <div class="subwork three">
+            <div class="sub">
+              <h4>pipeline-risk-model</h4>
+              <p>A risk prioritization model for bridge-attached pipeline assets across 160+ culverts in 5 states. It ranks assets so repair decisions are driven by data.</p>
+              <ul class="tags"><li>Risk modeling</li><li>Prioritization</li></ul>
+            </div>
+            <div class="sub">
+              <h4>contractor-field-program</h4>
+              <p>Managed a $36,000 contractor engagement for field investigations. I coordinated site selection across a multi-state network and oversaw deliverable reporting through contract execution.</p>
+              <ul class="tags"><li>Project management</li><li>Contracts</li></ul>
+            </div>
+            <div class="sub">
+              <h4>incident-monitor</h4>
+              <p>An AI-powered tool built with Microsoft Copilot that aggregates and tracks natural gas pipeline safety events from national sources, so the team spots industry-wide risk patterns sooner.</p>
+              <ul class="tags"><li>Microsoft Copilot</li><li>AI</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="intern">
+          <span class="chip">Chief Engineer · Aug 2022 – May 2024</span>
+          <h3>BotsIQ</h3>
+          <p class="meta">High school robotics competition team</p>
+          <p>I led a team of 10 through robot design, manufacturing, and competition. We placed 11th of 66 schools across PA and neighboring states, the best result in our school's history. I designed the mechanical components in Autodesk Inventor, validated them with FEA, and produced the G-code.</p>
+          <dl class="plate">
+            <div><dt>Placement</dt><dd>11th</dd></div>
+            <div><dt>Schools</dt><dd>66</dd></div>
+            <div><dt>Team size</dt><dd>10</dd></div>
+          </dl>
+        </article>
+
+        <p class="sublabel">Other projects</p>
+        <div class="cards">
+          <article class="card">
+            <h3>smart-bike-lock</h3>
+            <p class="meta">RPI design course</p>
+            <p>Team design project for a bike lock that alerts the owner's phone. I worked on the mechanical locking mechanism and led the concept exploration. The prototype pairs a servo lock and an MPU6050 tamper sensor on an Arduino Nano ESP32 with an iPhone app.</p>
+            <ul class="tags"><li>Arduino</li><li>Servo</li><li>MPU6050</li><li>React Native</li></ul>
+          </article>
+
+          <article class="card">
+            <h3>rocket-trajectory-sim</h3>
+            <p class="meta">simulation</p>
+            <p>A rocket trajectory simulator built in MATLAB and Simulink.</p>
+            <ul class="tags"><li>MATLAB</li><li>Simulink</li></ul>
+          </article>
+        </div>
+      </section>
+
+      <section aria-labelledby="tools-h">
+        <h2 class="kicker" id="tools-h">Toolchain</h2>
+        <div class="stack">
+          <div class="group wide">
+            <h3>CAD and simulation</h3>
+            <ul class="tags"><li>Siemens NX</li><li>Autodesk Inventor</li><li>Ansys CFX</li><li>Ansys Fluent</li><li>Simcenter Nastran</li><li>MATLAB</li><li>Simulink</li></ul>
+          </div>
+          <div class="group">
+            <h3>Code and data</h3>
+            <ul class="tags"><li>Python</li><li>HTML</li><li>Excel</li><li>Power BI</li></ul>
+          </div>
+          <div class="group">
+            <h3>AI</h3>
+            <ul class="tags"><li>AI agents</li><li>Microsoft Copilot</li></ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- contact -->
+    <div class="view" id="view-contact">
+      <header>
+        <h1 class="small"><span>Contact</span></h1>
+        <p class="lede">Open to talking about aerospace manufacturing, systems engineering, and student engineering teams.</p>
+      </header>
+
+      <section aria-labelledby="reach-h">
+        <h2 class="kicker" id="reach-h">Reach me</h2>
+        <div class="reach">
+          <a class="row" href="https://www.linkedin.com/in/andy-l-palm/" target="_blank" rel="noopener">
+            <span class="row-label">LinkedIn</span>
+            <span class="row-val">linkedin.com/in/andy-l-palm</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <div class="row">
+            <span class="row-label">Email</span>
+            <span class="row-val" id="email-text">palma@rpi.edu</span>
+            <button class="copy" type="button" data-copy="email-text">copy</button>
+          </div>
+          <div class="row">
+            <span class="row-label">Phone</span>
+            <span class="row-val" id="phone-text">724-993-2611</span>
+            <button class="copy" type="button" data-copy="phone-text">copy</button>
+          </div>
+          <a class="row" href="andy-palm-resume.pdf" target="_blank" rel="noopener">
+            <span class="row-label">Resume</span>
+            <span class="row-val">andy-palm-resume.pdf</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</main>
+
+<script>
+(function () {
+  var VIEWS = { home: 1, portfolio: 1, contact: 1 };
+
+  function current() {
+    var h = (location.hash || '').replace('#', '');
+    return VIEWS[h] ? h : 'home';
+  }
+
+  function show(resetScroll) {
+    var c = current();
+    Object.keys(VIEWS).forEach(function (k) {
+      var el = document.getElementById('view-' + k);
+      if (el) el.hidden = (k !== c);
+    });
+    var links = document.querySelectorAll('.nav a');
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].getAttribute('data-view') === c) links[i].setAttribute('aria-current', 'page');
+      else links[i].removeAttribute('aria-current');
+    }
+    if (resetScroll) { try { window.scrollTo(0, 0); } catch (e) {} }
+  }
+
+  window.addEventListener('hashchange', function () { show(true); });
+  show(false);
+
+  var buttons = document.querySelectorAll('.copy');
+  Array.prototype.forEach.call(buttons, function (btn) {
+    var txt = document.getElementById(btn.getAttribute('data-copy'));
+    if (!txt) return;
+    btn.addEventListener('click', function () {
+      function done() { btn.textContent = 'copied'; setTimeout(function () { btn.textContent = 'copy'; }, 1600); }
+      function fallback() {
+        try {
+          var r = document.createRange();
+          r.selectNodeContents(txt);
+          var s = window.getSelection();
+          s.removeAllRanges();
+          s.addRange(r);
+        } catch (e) {}
+      }
+      try {
+        navigator.clipboard.writeText(txt.textContent).then(done, fallback);
+      } catch (e) { fallback(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
